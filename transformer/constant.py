@@ -14,7 +14,7 @@ import torch
 # OUTPUT_DIM = 300
 # WARM_STEPS = 4000
 
-batch_size = 4
+batch_size = 128
 max_len = 64
 d_model = 512
 d_ff = 2048
