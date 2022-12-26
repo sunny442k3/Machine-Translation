@@ -37,36 +37,24 @@ class CustomDataset:
         return self.source[idx], self.target[idx]
 
 
-def get_loader(path, batch_size=128):
-    df = read_csv("./dataset/corpus.csv")
-    kor_word = df["korean"].values 
-    eng_word = df["english"].values 
-
-    kor_tokenizer = Tokenizer(kor_word, 150000)
-    eng_tokenizer = Tokenizer(eng_word, 50000)
-
-    df = read_csv(path)
-    kor_word = df["korean"].values 
-    eng_word = df["english"].values 
-    kor_data = make_dataset(kor_word, kor_tokenizer)
-    eng_data = make_dataset(eng_word, eng_tokenizer)
-    kor_data = torch.tensor(kor_data).float()
-    eng_data = torch.tensor(eng_data).float()
-    dataset = CustomDataset(kor_data, eng_data)
-    dataloader = DataLoader(
-        dataset,
+def get_loader(src, trg, src_tokenizer, trg_tokenizer, batch_size=128, test_size=0.3):
+    src_data = make_dataset(src, src_tokenizer)
+    trg_data = make_dataset(trg, trg_tokenizer)
+    src_data = torch.tensor(src_data).float()
+    trg_data = torch.tensor(trg_data).float()
+    lim = int(test_size*len(src))
+    valid_dataset = CustomDataset(src_data[:lim], trg_data[:lim])
+    train_dataset = CustomDataset(src_data[lim:], trg_data[lim:])
+    train_loader = DataLoader(
+        train_dataset,
         batch_size=batch_size,
         drop_last=False,
         shuffle=True
     )
-    return dataloader
-
-
-if __name__ == "__main__":
-    en_train = None 
-    vi_train = None
-    en_train = open("./dataset/train-en-vi/train.en", "rb").readlines()
-    en_train = [i.decode("utf8") for i in en_train]
-    vi_train = open("./dataset/train-en-vi/train.vi", "r", encoding="utf8").readlines()
-    print(en_train[:10])
-    print(vi_train[:10])
+    valid_loader = DataLoader(
+        valid_dataset,
+        batch_size=batch_size,
+        drop_last=False,
+        shuffle=True
+    )
+    return train_loader, valid_loader

@@ -1,9 +1,7 @@
 import time
 import torch
-import pickle
 from transformer import constant as cf
 from transformer.model import Transformer
-from preprocessing import CustomDataset
 from transformer.scheduler import SchedulerAdam
 
 
