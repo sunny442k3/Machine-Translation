@@ -5,6 +5,10 @@ import transformer.constant as cf
 from transformer.tokenizer import Tokenizer
 from torch.utils.data import DataLoader
 
+
+
+
+
 def read_csv(path):
     df = pd.read_csv(path, encoding='utf-8')
     return df 
@@ -33,7 +37,14 @@ class CustomDataset:
         return self.source[idx], self.target[idx]
 
 
-def get_loader(path, kor_tokenizer, eng_tokenizer, batch_size=128):
+def get_loader(path, batch_size=128):
+    df = read_csv("./dataset/corpus.csv")
+    kor_word = df["korean"].values 
+    eng_word = df["english"].values 
+
+    kor_tokenizer = Tokenizer(kor_word, 150000)
+    eng_tokenizer = Tokenizer(eng_word, 50000)
+
     df = read_csv(path)
     kor_word = df["korean"].values 
     eng_word = df["english"].values 
@@ -49,23 +60,3 @@ def get_loader(path, kor_tokenizer, eng_tokenizer, batch_size=128):
         shuffle=True
     )
     return dataloader
-
-
-if __name__ == "__main__":
-    df = read_csv("./dataset/corpus.csv")
-    kor_word = df["korean"].values 
-    eng_word = df["english"].values 
-
-    kor_tokenizer = Tokenizer(kor_word, 150000)
-    eng_tokenizer = Tokenizer(eng_word, 50000)
-    print("Vocab source length:", len(kor_tokenizer.token))
-    print("Vocab target length:", len(eng_tokenizer.token))
-    train_loader = get_loader("./dataset/train.csv", kor_tokenizer, eng_tokenizer, batch_size=cf.batch_size)
-    valid_loader = get_loader("./dataset/valid.csv", kor_tokenizer, eng_tokenizer, batch_size=cf.batch_size)
-
-    with open("./checkpoint/train_loader.pickle", 'wb') as f:
-        pickle.dump(train_loader, f)
-    with open("./checkpoint/valid_loader.pickle", "wb") as f:
-        pickle.dump(valid_loader, f)
-
-    

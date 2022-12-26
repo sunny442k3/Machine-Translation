@@ -92,7 +92,7 @@ class Trainer:
 
             loss_his.append(loss.item())
 
-            print_progress(idx+1, len(data_loader), fi=["\t[Train]" if mode!="test" else "\t[Valid]"][0] + " {:3d}/{:3d} batches".format(idx+1, 50), last="Loss: {:.5f} lr: {:.7f}".format(loss.item(), self.optimizer.get_lr()))
+            print_progress(idx+1, len(data_loader), fi=["\t[Train]" if mode!="test" else "\t[Valid]"][0] + " {:3d}/{:3d} batches".format(idx+1, len(data_loader)), last="Loss: {:.5f} lr: {:.7f}".format(loss.item(), self.optimizer.get_lr()))
         print()
         loss = sum(loss_his) / len(loss_his)
         if mode == "test":
