@@ -7,7 +7,7 @@ REP_WORD = ["n't", " not"]
 class Tokenizer:
 
 
-    def __init__(self, sequences, vocab_size):
+    def __init__(self, sequences):
         self.most_word = {}
         words = []
         for seq in sequences:
@@ -23,7 +23,6 @@ class Tokenizer:
                 self.most_word[word] += 1
         item_words = [i for i in self.most_word.items()]
         item_words.sort(key=lambda x: x[1], reverse=True)
-        item_words = item_words[:vocab_size-3]
         self.most_word = {}
         for item in item_words:
             self.most_word[item[0]] = item[1]
@@ -60,16 +59,8 @@ class Tokenizer:
         k = list(self.token.keys())
         v = list(self.token.values())
         for idx in token:
-            if idx == 1 or idx == 2:
+            if idx in [0,1,2,3]:
                 continue
             find_idx = v.index(idx)
             sequence.append(k[find_idx])
         return sequence
-
-
-
-# if __name__ == "__main__":
-#     tokenizer = Tokenizer(["I don't understand"], 100)
-#     print(tokenizer.token)
-#     decode = tokenizer.decode([1,4,3,5,3,5,2])
-#     print(decode)
