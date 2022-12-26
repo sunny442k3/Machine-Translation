@@ -26,4 +26,17 @@ class SchedulerAdam():
     
 
     def zero_grad(self):
-        self.optimizer().zero_grad()
+        self.optimizer.zero_grad()
+
+
+    def load_state_dict(self, weight):
+        self.optimizer.load_state_dict(weight)
+
+
+    def state_dict(self):
+        return self.optimizer.state_dict()
+
+    
+    def get_lr(self):
+        for param_group in self.optimizer.param_groups:
+            return param_group['lr']

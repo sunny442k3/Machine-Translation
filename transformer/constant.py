@@ -14,7 +14,7 @@ import torch
 # OUTPUT_DIM = 300
 # WARM_STEPS = 4000
 
-batch_size = 128
+batch_size = 4
 max_len = 64
 d_model = 512
 d_ff = 2048
@@ -25,5 +25,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 warm_steps = 4000
 pad_idx = 0
 eps = 1e-6
-src_vocab_size = 100000
-trg_vocab_size = 20000
+src_vocab_size = 106107
+trg_vocab_size = 22532
+epochs = 20
+clip = 1
