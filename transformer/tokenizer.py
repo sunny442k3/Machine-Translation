@@ -48,7 +48,7 @@ class Tokenizer:
         text = text[:max_length-2]
         text = [word.lower() for word in text if len(word)]
         token = [self.token["<sos>"]] + [
-            self.token[word] if word in self.token else 3 for word in text 
+            self.token[word] if word in self.token else self.token["<unk>"] for word in text 
         ] + [self.token["<eos>"]]
         if len(token) != max_length:
             token += [self.token["<pad>"]] * (max_length - len(token))

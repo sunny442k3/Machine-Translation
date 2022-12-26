@@ -60,3 +60,13 @@ def get_loader(path, batch_size=128):
         shuffle=True
     )
     return dataloader
+
+
+if __name__ == "__main__":
+    en_train = None 
+    vi_train = None
+    en_train = open("./dataset/train-en-vi/train.en", "rb").readlines()
+    en_train = [i.decode("utf8") for i in en_train]
+    vi_train = open("./dataset/train-en-vi/train.vi", "r", encoding="utf8").readlines()
+    print(en_train[:10])
+    print(vi_train[:10])

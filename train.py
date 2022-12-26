@@ -122,9 +122,13 @@ class Trainer:
 
 
 if __name__ == "__main__":
-    train_loader = open("./checkpoint/train_loader.pickle", "rb")
-    valid_loader = open("./checkpoint/valid_loader.pickle", "rb")
-    train_loader = pickle.load(train_loader)
-    valid_loader = pickle.load(valid_loader)
+    # train_loader = open("./checkpoint/train_loader.pickle", "rb")
+    # valid_loader = open("./checkpoint/valid_loader.pickle", "rb")
+    # train_loader = pickle.load(train_loader)
+    # valid_loader = pickle.load(valid_loader)
     tm = Trainer()
-    tm.fit(train_loader, valid_loader, "./checkpoint/container_tm.pth")
+    mem_params = sum([param.nelement()*param.element_size() for param in tm.model.parameters()])
+    mem_bufs = sum([buf.nelement()*buf.element_size() for buf in tm.model.buffers()])
+    mem = (((mem_params + mem_bufs)/1024.0)/1024.0)/1024.0
+    print(mem)
+    # tm.fit(train_loader, valid_loader, "./checkpoint/container_tm.pth")
