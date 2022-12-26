@@ -10,11 +10,6 @@ from transformer.scheduler import SchedulerAdam
 def print_progress(index, total, fi="", last=""):
     percent = ("{0:.1f}").format(100 * ((index) / total))
     fill = int(30 * (index / total))
-    # spec_char = ["\x1b[1;31;40m╺\x1b[0m",
-    #              "\x1b[1;36;40m━\x1b[0m", "\x1b[1;37;40m━\x1b[0m"]
-    # bar = spec_char[1]*(fill-1) + spec_char[0] + spec_char[2]*(30-fill)
-    # if fill == 30:
-        # bar = spec_char[1]*fill
     spec_char = ["\x1b[1;36;40m━\x1b[0m", "\x1b[1;37;40m━\x1b[0m"]
     bar = spec_char[0]*fill + spec_char[1]*(30-fill)
 
@@ -76,7 +71,6 @@ class Trainer:
             self.model.train()
 
         loss_his = []
-        start_time = time.time()
         for idx, (source, target) in enumerate(data_loader):
             if mode == "train":
                 self.optimizer.zero_grad()
@@ -98,21 +92,7 @@ class Trainer:
 
             loss_his.append(loss.item())
 
-            elapsed = time.time() - start_time
-            # print("", end="\r")
-            # print('| {:5s} {:3d} / {:3d} batches | lr {:02.6f} | {:5.2f} s | loss {:5.7f} |{:16s}|'.format(
-            #     "Train" if mode != "test" else "Valid",
-            #     idx+1, 10, 
-            #     self.optimizer.get_lr(),
-            #     elapsed, 
-            #     loss.item(),
-            #     " "*16), 
-            #     end=""
-            # )
-            print_progress(idx+1, 50, fi=["\t[Train]" if mode!="test" else "\t[Valid]"][0] + " {:3d}/{:3d} batches".format(idx+1, 50), last="Loss: {:.5f} lr: {:.7f}".format(loss.item(), self.optimizer.get_lr()))
-            start_time = time.time()
-            if idx == 49:
-                break
+            print_progress(idx+1, len(data_loader), fi=["\t[Train]" if mode!="test" else "\t[Valid]"][0] + " {:3d}/{:3d} batches".format(idx+1, 50), last="Loss: {:.5f} lr: {:.7f}".format(loss.item(), self.optimizer.get_lr()))
         print()
         loss = sum(loss_his) / len(loss_his)
         if mode == "test":
