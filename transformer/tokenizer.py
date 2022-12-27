@@ -44,6 +44,7 @@ class Tokenizer:
     def encode(self, text, max_length):
         text = text.replace(REP_WORD[0], REP_WORD[1])
         text = self._clean_text(text).split(" ")
+        text = [word for word in text if len(word)]
         text = text[:max_length-2]
         text = [word.lower() for word in text if len(word)]
         token = [self.token["<sos>"]] + [

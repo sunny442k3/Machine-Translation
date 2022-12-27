@@ -20,19 +20,6 @@ class SelfAttention(nn.Module):
         self.wv = nn.Linear(self.hidden_dim, self.att_dim, bias=False)
 
         self.dropout = nn.Dropout(cf.dropout)
-        self.init_weight()
-
-    
-    def init_weight(self):
-        nn.init.xavier_uniform_(self.wq.weight)
-        nn.init.xavier_uniform_(self.wk.weight)
-        nn.init.xavier_uniform_(self.wv.weight)
-        if self.wq.bias is not None:
-            nn.init.constant_(self.wq.bias, 0)
-        if self.wk.bias is not None:
-            nn.init.constant_(self.wk.bias, 0)
-        if self.wv.bias is not None:
-            nn.init.constant_(self.wv.bias, 0)
 
 
     def forward(self, q, k, v, mask=None):
@@ -71,13 +58,6 @@ class MultiHeadAttention(nn.Module):
         ])
         self.wo = nn.Linear(self.hidden_dim, self.hidden_dim, bias=False)
         self.dropout = nn.Dropout(cf.dropout)
-        # self.init_weight()
-
-    
-    def init_weight(self):
-        nn.init.xavier_uniform_(self.wo)
-        if self.wo.bias is not None:
-            nn.init.constant_(self.wo.bias, 0)
         
 
     def forward(self, q, k, v, mask=None):
@@ -105,16 +85,6 @@ class PositionWiseFeedForward(nn.Module):
         self.w2 = nn.Linear(cf.d_ff, cf.d_model, bias=True)
         self.activation = nn.ReLU()
         self.dropout = nn.Dropout(cf.dropout)
-        # self.init_weight()
-
-
-    def init_weight(self):
-        nn.init.xavier_uniform_(self.w1)
-        nn.init.xavier_uniform_(self.w2)
-        if self.w1.bias is not None:
-            nn.init.constant_(self.w1.bias, 0)
-        if self.w2.bias is not None:
-            nn.init.constant_(self.w2.bias, 0)
 
 
     def forward(self, x):

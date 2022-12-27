@@ -5,6 +5,10 @@ from transformer.model import Transformer
 from transformer.scheduler import SchedulerAdam
 
 
+from transformer.tokenizer import Tokenizer
+from preprocessing import get_loader, read_csv, process_dataset, make_dataset
+
+
 def print_progress(index, total, fi="", last=""):
     percent = ("{0:.1f}").format(100 * ((index) / total))
     fill = int(30 * (index / total))
@@ -120,13 +124,26 @@ class Trainer:
 
 
 if __name__ == "__main__":
-    # train_loader = open("./checkpoint/train_loader.pickle", "rb")
-    # valid_loader = open("./checkpoint/valid_loader.pickle", "rb")
-    # train_loader = pickle.load(train_loader)
-    # valid_loader = pickle.load(valid_loader)
-    tm = Trainer()
-    mem_params = sum([param.nelement()*param.element_size() for param in tm.model.parameters()])
-    mem_bufs = sum([buf.nelement()*buf.element_size() for buf in tm.model.buffers()])
-    mem = (((mem_params + mem_bufs)/1024.0)/1024.0)/1024.0
-    print(mem)
-    # tm.fit(train_loader, valid_loader, "./checkpoint/container_tm.pth")
+    corpus_df = read_csv("./dataset/corpus.csv")
+    src_tokenizer = Tokenizer(corpus_df["korean"].values)
+    trg_tokenizer = Tokenizer(corpus_df["english"].values)
+
+    df = read_csv("./dataset/train.csv")
+    src, trg, missing = process_dataset(df.values)
+    print(f"src size: {len(src)} - trg size: {len(trg)} - miss size: {len(missing)}")
+    print(f"max length src sequence: {max([len(seq) for seq in src])}")
+    print(f"max length trg sequence: {max([len(seq) for seq in trg])}")
+
+    train_loader, valid_loader = get_loader(
+        src,
+        trg,
+        src_tokenizer,
+        trg_tokenizer
+    )
+
+    print(f"size train loader: {len(train_loader)} - size valid loader: {len(valid_loader)}")
+
+    model = Trainer()
+    # model.load_model("./checkpoint/model.pth")
+    model.epochs = 5
+    model.fit(train_loader, valid_loader, "./checkpoint/model.pth")
