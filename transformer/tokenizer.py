@@ -60,8 +60,6 @@ class Tokenizer:
         k = list(self.token.keys())
         v = list(self.token.values())
         for idx in token:
-            if idx in [0,1,2,3]:
-                continue
             find_idx = v.index(idx)
             sequence.append(k[find_idx])
         return sequence

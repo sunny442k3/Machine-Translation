@@ -20,10 +20,10 @@ import torch
 
 batch_size = 128
 max_len = 35
-d_model = 256
-d_ff = 512
-n_head = 4
-n_layer = 2
+d_model = 512
+d_ff = 1024
+n_head = 8
+n_layer = 4
 dropout = 0.1
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 warm_steps = 4000

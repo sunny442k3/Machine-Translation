@@ -58,28 +58,20 @@ class CustomDataset:
         return self.source[idx], self.target[idx]
 
 
-def get_loader(src, trg, src_tokenizer, trg_tokenizer, batch_size=cf.batch_size, test_size=0.3):
+def get_loader(src, trg, src_tokenizer, trg_tokenizer, batch_size=cf.batch_size):
     src_data = make_dataset(src, src_tokenizer)
     trg_data = make_dataset(trg, trg_tokenizer)
-    src_data = torch.tensor(src_data).float()
-    trg_data = torch.tensor(trg_data).float()
-    lim = int(test_size*len(src))
-    valid_dataset = CustomDataset(src_data[:lim], trg_data[:lim])
-    train_dataset = CustomDataset(src_data[lim:], trg_data[lim:])
-    train_loader = DataLoader(
-        train_dataset,
+    src_data = torch.tensor(src_data).long()
+    trg_data = torch.tensor(trg_data).long()
+    dataset = CustomDataset(src_data, trg_data)
+    data_loader = DataLoader(
+        dataset,
         batch_size=batch_size,
         drop_last=False,
         shuffle=True
     )
-    valid_loader = DataLoader(
-        valid_dataset,
-        batch_size=batch_size,
-        drop_last=False,
-        shuffle=True
-    )
-    return train_loader, valid_loader
-    
+    return data_loader
+
 
 # if __name__ == "__main__":
 #     df = read_csv("./dataset/train.csv")
