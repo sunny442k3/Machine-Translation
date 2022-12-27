@@ -123,27 +123,27 @@ class Trainer:
                 return 
 
 
-# if __name__ == "__main__":
-#     corpus_df = read_csv("./dataset/corpus.csv")
-#     src_tokenizer = Tokenizer(corpus_df["korean"].values)
-#     trg_tokenizer = Tokenizer(corpus_df["english"].values)
+if __name__ == "__main__":
+    corpus_df = read_csv("./dataset/corpus.csv")
+    src_tokenizer = Tokenizer(corpus_df["korean"].values)
+    trg_tokenizer = Tokenizer(corpus_df["english"].values)
 
-#     df = read_csv("./dataset/train.csv")
-#     src, trg, missing = process_dataset(df.values)
-#     print(f"src size: {len(src)} - trg size: {len(trg)} - miss size: {len(missing)}")
-#     print(f"max length src sequence: {max([len(seq.split(' ')) for seq in src])}")
-#     print(f"max length trg sequence: {max([len(seq.split(' ')) for seq in trg])}")
+    df = read_csv("./dataset/train.csv")
+    src, trg, missing = process_dataset(df.values)
+    print(f"src size: {len(src)} - trg size: {len(trg)} - miss size: {len(missing)}")
+    print(f"max length src sequence: {max([len(seq.split(' ')) for seq in src])}")
+    print(f"max length trg sequence: {max([len(seq.split(' ')) for seq in trg])}")
 
-#     train_loader, valid_loader = get_loader(
-#         src,
-#         trg,
-#         src_tokenizer,
-#         trg_tokenizer
-#     )
+    train_loader = get_loader(
+        src,
+        trg,
+        src_tokenizer,
+        trg_tokenizer
+    )
 
-#     print(f"size train loader: {len(train_loader)} - size valid loader: {len(valid_loader)}")
+    print(f"size train loader: {len(train_loader)} - size valid loader: {len(train_loader)}")
 
-#     model = Trainer()
-#     # model.load_model("./checkpoint/model.pth")
-#     model.epochs = 5
-#     model.fit(train_loader, valid_loader, "./checkpoint/model.pth")
+    model = Trainer()
+    # model.load_model("./checkpoint/model.pth")
+    model.epochs = 5
+    model.fit(train_loader, train_loader, "./checkpoint/model.pth")

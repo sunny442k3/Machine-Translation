@@ -20,9 +20,9 @@ import torch
 
 batch_size = 128
 max_len = 35
-d_model = 512
-d_ff = 1024
-n_head = 8
+d_model = 1024
+d_ff = 2048
+n_head = 16
 n_layer = 4
 dropout = 0.1
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
