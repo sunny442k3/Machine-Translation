@@ -1,6 +1,6 @@
 import os
 import random
-import config
+from . import config
 import models
 from checkpoint import ModelCheckpoint
 import pytorch_lightning as pl

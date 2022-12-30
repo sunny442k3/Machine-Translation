@@ -1,4 +1,4 @@
-import config
+from . import config
 from models import T5FineTuner
 import torch
 from data import create_adapted_tokenizer
