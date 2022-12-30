@@ -1,8 +1,7 @@
 import os
 import yaml
 from pathlib import Path
-parent = os.path.dirname(os.path.abspath(__file__)) + '/../'
-CONFIG_FILE = parent+os.sep+"config.yml"
+CONFIG_FILE = "./config.yml"
 
 with open(CONFIG_FILE) as f:
     parsed_yaml_file = yaml.load(f, Loader=yaml.FullLoader)
