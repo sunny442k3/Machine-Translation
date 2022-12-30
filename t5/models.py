@@ -3,7 +3,7 @@ from transformers import T5ForConditionalGeneration
 from torch.utils.data import DataLoader
 from data import create_adapted_tokenizer, T5Dataset
 import pytorch_lightning as pl
-from . import config
+import config
 import torch
 
 
